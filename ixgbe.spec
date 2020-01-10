@@ -1,9 +1,9 @@
 %define kmod_name		ixgbe
-%define kmod_driver_version	4.0.3
+%define kmod_driver_version	4.4.0_k
 %define kmod_rpm_release	1
-%define kmod_git_hash		3b78d2e63c8bc6737243f12e74fe133be865c3d4
-%define kmod_kernel_version	3.10.0-229.el7
-%define kernel_version		3.10.0-229.el7
+%define kmod_git_hash		c020267fe914154ccb292cdb1d5d2fd6238a3fb3
+%define kmod_kernel_version	3.10.0-327.el7
+%define kernel_version		3.10.0-327.el7
 %define kmod_kbuild_dir		drivers/net/ethernet/intel/ixgbe
 
 
@@ -17,6 +17,7 @@ Source4:	find-provides.ksyms
 Source5:	kmodtool			
 Source6:	symbols.greylist-x86_64			
 
+Patch0:		ixgbe.patch
 
 %define __find_requires %_sourcedir/find-requires.ksyms
 %define __find_provides %_sourcedir/find-provides.ksyms %{kmod_name} %{?epoch:%{epoch}:}%{version}-%{release}
@@ -43,6 +44,7 @@ ExclusiveArch:  x86_64
 
 %prep
 %setup
+%patch0 -p1
 set -- *
 mkdir source
 mv "$@" source/
@@ -101,11 +103,6 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %changelog
-* Tue Oct 20 2015 Scientific Linux Auto Patch Process <SCIENTIFIC-LINUX-DEVEL@LISTSERV.FNAL.GOV>
-- Eliminated rpmbuild "bogus date" error due to inconsistent weekday,
-  by assuming the date is correct and changing the weekday.
-
-* Mon Sep 14 2015 Petr Oros <poros@redhat.com> 4.0.3 1
-- ixgbe DUP module
-- Resolves: #1261791
-
+* Tue Jul 19 2016 Petr Oros <poros@redhat.com> 4.4.0_k 1
+- Update ixgbe for rhel-7.2.z
+- Resolves: #1346994
